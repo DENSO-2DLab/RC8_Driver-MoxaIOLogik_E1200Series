@@ -1,4 +1,4 @@
-# RC8_Driver-MoxaIOLogik_E1200Series
+# Driver-MoxaIOLogik_E1200Series
 
 PACScript Driver to communicate with MOXA ioLogik E1200 series devices. 
 
