@@ -1,0 +1,45 @@
+'!TITLE "Pick Place using Moxa IO"
+#Include "MoxaIOLogik.h"
+
+Sub Main
+	TakeArm Keep = 0
+	
+	'Reset all Outputs
+	Call MOXA_DO_WriteAll(&B0000)
+
+	'Move Home
+	Move P, @P P0
+	Call OpenGripper
+
+	'Approach to Pick
+	Approach P, P1, @P 50
+	Move L, @E P1
+	Call CloseGripper
+	Depart L, @P 100
+
+	'Wait to receive input to continue
+	'Place location is ready
+	Wait MOXA_DI_Status(1) = 1 
+
+	'Approach to Place
+	Approach P, P2, @P 50
+	Move L, @E P2
+	Call OpenGripper
+	Depart L, @P 100
+End Sub
+
+Sub OpenGripper
+	'Set IO to Open Gripper
+	Call MOXA_SetIO(3)
+	Call MOXA_ResetIO(4)
+	Delay 100
+End Sub
+
+Sub CloseGripper
+	'Set IO to Open Gripper
+	Call MOXA_SetIO(4)
+	Call MOXA_ResetIO(3)
+
+	'Wait for force sensor to turn on
+	Wait MOXA_DI_Status(2)
+End Sub
