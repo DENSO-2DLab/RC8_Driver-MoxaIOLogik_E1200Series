@@ -1,3 +1,6 @@
+![](https://img.shields.io/cocoapods/l/AFNetworking.svg)
+![](https://img.shields.io/badge/support%20level-community-green.svg)
+
 # Driver-MoxaIOLogik_E1200Series
 
 PACScript Driver to communicate with MOXA ioLogik E1200 series devices. 
