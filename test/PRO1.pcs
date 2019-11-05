@@ -19,7 +19,7 @@ Sub Main
 
 	'Wait to receive input to continue
 	'Place location is ready
-	Wait MOXA_DI_Status(1) = 1 
+	Wait MOXA_DI_Status(0) = 1 
 
 	'Approach to Place
 	Approach P, P2, @P 50
@@ -30,16 +30,16 @@ End Sub
 
 Sub OpenGripper
 	'Set IO to Open Gripper
-	Call MOXA_SetIO(3)
-	Call MOXA_ResetIO(4)
+	Call MOXA_SetIO(2)
+	Call MOXA_ResetIO(3)
 	Delay 100
 End Sub
 
 Sub CloseGripper
 	'Set IO to Open Gripper
-	Call MOXA_SetIO(4)
-	Call MOXA_ResetIO(3)
+	Call MOXA_SetIO(3)
+	Call MOXA_ResetIO(2)
 
 	'Wait for force sensor to turn on
-	Wait MOXA_DI_Status(2)
+	Wait MOXA_DI_Status(1)
 End Sub

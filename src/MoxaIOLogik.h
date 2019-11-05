@@ -63,8 +63,7 @@ Sub MOXA_SetIO(ByVal iVal As Integer)
 	'Check that Index is in channel range (based on E1200s model)
 	If IndexOutRange("DO", iVal) Then Err.Raise &H83600014
 	
-	varIndex = Sprintf("DO%d", iVal+1)
-	objDO = MOXA_Connect(varIndex, "DO")
+	objDO = MOXA_Connect(iVal+1, "DO")
 
 	'Output Value
 	objDO.Value = &B1
@@ -82,8 +81,7 @@ Sub MOXA_ResetIO(ByVal iVal As Integer)
 	'Check that Index is in channel range (based on E1200s model)
 	If IndexOutRange("DO", iVal) Then Err.Raise &H83600014
 
-	varIndex = Sprintf("DO%d", iVal+1)
-	objDO = MOXA_Connect(varIndex, "DO")
+	objDO = MOXA_Connect(iVal+1, "DO")
 
 	'Output Value
 	objDO.Value = &B0
@@ -101,8 +99,7 @@ Function MOXA_DO_Status(ByVal iVal As Integer) As Integer
 	'Check that Index is in channel range
 	If IndexOutRange("DO", iVal) Then Err.Raise &H83600014
 
-	varIndex = Sprintf("DO%d", iVal+1)
-	objDO = MOXA_Connect(varIndex, "DO")
+	objDO = MOXA_Connect(iVal+1, "DO")
 
 	MOXA_DO_Status = objDO.Value
 	
@@ -116,7 +113,7 @@ End Function
 Function MOXA_DO_ReadAll() As Integer
 	Dim objDO As Object
 
-	objDO = MOXA_Connect("HRI33", "HR")
+	objDO = MOXA_Connect(33, "HR")
 
 	MOXA_DO_ReadAll = objDO.Value
 End Function
@@ -129,7 +126,7 @@ End Function
 Sub MOXA_DO_WriteAll(setValue As Integer)
 	Dim objDO As Object
 
-	objDO = MOXA_Connect("HRI33", "HR")
+	objDO = MOXA_Connect(33, "HR")
 
 	'Output Value
 	objDO.Value = setValue
@@ -147,8 +144,7 @@ Function MOXA_DI_Status(ByVal iVal As Integer) As Integer
 	'Check that Index is in channel range (based on E1200s model)
 	If IndexOutRange("DI", iVal) Then Err.Raise &H83600014
 
-	varIndex = Sprintf("DI%d", iVal+1)		
-	objDI = MOXA_Connect(varIndex, "DI")
+	objDI = MOXA_Connect(iVal+1, "DI")
 
 	'Output Value
 	MOXA_DI_Status = objDI.Value
@@ -162,7 +158,7 @@ End Function
 Function MOXA_DI_ReadAll() As Integer
 	Dim objDI As Object
 
-	objDI = MOXA_Connect("IRI49", "IR")
+	objDI = MOXA_Connect(49, "IR")
 
 	'Output Value
 	MOXA_DI_ReadAll = objDI.Value
@@ -180,8 +176,7 @@ Function MOXA_AI_Value(ByVal iVal As Integer) As Single
 	'Check that Index is in channel range (based on E1200s model)
 	If IndexOutRange("AI", iVal) Then Err.Raise &H83600014
 
-	varIndex = Sprintf("IRF%d", iVal*2 + 521)		
-	objAI = MOXA_Connect(varIndex, "AI")
+	objAI = MOXA_Connect(iVal*2 + 521, "AI")
 
 	'Output Value
 	MOXA_AI_Value = objAI.Value
@@ -197,7 +192,7 @@ End Function
 '
 'Output: MOXA_Connect	->	CAO Variable Reference 
 '-------------------------------------------------------------------------------
-Function MOXA_Connect(varIndex As String, IOType As String) As Object
+Function MOXA_Connect(varIndex As Integer, IOType As String) As Object
 
 	'---Modbus Provider Connection Settings
 	Dim providerName As String = "CaoProv.Modbus.X"
@@ -208,21 +203,26 @@ Function MOXA_Connect(varIndex As String, IOType As String) As Object
 	Dim extVarOpt As String
 
 	'---Connect
-	Dim objCtrl As Object, objExt As Object
+	Dim objCtrl As Object, objExt As Object, varName As String
 
 	objCtrl = Cao.AddController(sessionName, providerName, "", providerOpt)
 	objExt = objCtrl.AddExtension(extensionName, extOpt)
 
 	Select Case IOType
 		Case "DO"
+			varName = Sprintf("DO%d", varIndex)
 			extVarOpt = "UserVarWidth=1, @IfNotMember"
 		Case "HR"
+			varName = Sprintf("HRI%d", varIndex)
 			extVarOpt = "UserVarWidth=16, @IfNotMember"
 		Case "DI"
+			varName = Sprintf("DI%d", varIndex)
 			extVarOpt = "UserVarWidth=1, @IfNotMember"
 		Case "IR"
+			varName = Sprintf("IRI%d", varIndex)
 			extVarOpt = "UserVarWidth=16, @IfNotMember"
 		Case "AI"
+			varName = Sprintf("IRF%d", varIndex)
 			extVarOpt = "UserVarWidth=32, @IfNotMember"
 	End Select
 
