@@ -6,7 +6,7 @@
 ' @brief   Wrapper for MOXA Modbus Registers
 ' @details 
 
-' @version 1.0.0
+' @version 1.0.1
 ' @date    2019/11/04
 ' @author  Carlos A. Lopez (DPAM - R&D)
 
