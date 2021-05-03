@@ -1,4 +1,4 @@
-'!TITLE "Robot program"
+09371'!TITLE "Robot program"
 #Include "Variant.h"
 
 'MOXAIOLogik API Wrapper-------------------------------------------------------
@@ -6,13 +6,13 @@
 ' @brief   Wrapper for MOXA Modbus Registers
 ' @details 
 
-' @version 1.0.1
-' @date    2019/11/04
+' @version 1.1.0
+' @date    2021/05/03
 ' @author  Carlos A. Lopez (DPAM - R&D)
 
 ' Software License Agreement (MIT License)
 
-' @copyright Copyright (c) 2019 DENSO 2DLab
+' @copyright Copyright (c) 2021 DENSO 2DLab
 
 ' Permission is hereby granted, free of charge, to any person obtaining a copy
 ' of this software and associated documentation files (the "Software"), to deal
@@ -226,7 +226,7 @@ Function MOXA_Connect(varIndex As Integer, IOType As String) As Object
 			extVarOpt = "UserVarWidth=32, @IfNotMember"
 	End Select
 
-	MOXA_Connect = objExt.AddVariable(varIndex, extVarOpt)
+	MOXA_Connect = objExt.AddVariable(varName, extVarOpt)
 End Function
 
 '---IndexOutRange---------------------------------------------------------------
